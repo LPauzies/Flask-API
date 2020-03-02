@@ -1,14 +1,13 @@
 from flask import request
 from flask_restful import Resource, reqparse, abort
 
-from typing import Dict, List
+from typing import Dict, List, Any
 
 from app.services.todosService import TODOS
 
 class TodoManagementResource(Resource):
 
-
-    def get(self) -> Dict[str, str]:
+    def get(self) -> Dict[str, Any]:
         """
         Return all the TODOS contained in the todos service
         ---
@@ -20,7 +19,7 @@ class TodoManagementResource(Resource):
         """
         return TODOS, 200
 
-    def put(self) -> Dict[str, str]:
+    def put(self) -> Dict[str, Any]:
         """
         Create the content of a todo in the todos service
         ---
@@ -63,10 +62,9 @@ class TodoManagementResource(Resource):
         except:
             abort(400)
 
-
 class TodoManagementResourceByID(Resource):
 
-    def get(self, todo_id: int) -> Dict[str, str]:
+    def get(self, todo_id: int) -> Dict[str, Any]:
         """
         Get the content of a todo in the todos service
         ---
@@ -87,7 +85,7 @@ class TodoManagementResourceByID(Resource):
         abort_if_todo_doesnt_exist(todo_id)
         return TODOS[todo_id], 200
 
-    def delete(self, todo_id: int) -> Dict[str, str]:
+    def delete(self, todo_id: int) -> Dict[str, Any]:
         """
         Delete the content of a todo in the todos service
         ---
@@ -110,7 +108,7 @@ class TodoManagementResourceByID(Resource):
         del TODOS[todo_id]
         return todo, 200
 
-    def patch(self, todo_id: int) -> Dict[str, str]:
+    def patch(self, todo_id: int) -> Dict[str, Any]:
         """
         Create the content of a todo in the todos service
         ---
