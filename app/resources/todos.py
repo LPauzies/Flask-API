@@ -1,11 +1,14 @@
 from flask import request
 from flask_restful import Resource, reqparse, abort
+
+from typing import Dict, List
+
 from app.services.todosService import TODOS
 
 class TodoManagementResource(Resource):
 
 
-    def get(self):
+    def get(self) -> Dict[str, str]:
         """
         Return all the TODOS contained in the todos service
         ---
@@ -17,7 +20,7 @@ class TodoManagementResource(Resource):
         """
         return TODOS, 200
 
-    def put(self):
+    def put(self) -> Dict[str, str]:
         """
         Create the content of a todo in the todos service
         ---
@@ -63,7 +66,7 @@ class TodoManagementResource(Resource):
 
 class TodoManagementResourceByID(Resource):
 
-    def get(self, todo_id):
+    def get(self, todo_id: int) -> Dict[str, str]:
         """
         Get the content of a todo in the todos service
         ---
@@ -84,7 +87,7 @@ class TodoManagementResourceByID(Resource):
         abort_if_todo_doesnt_exist(todo_id)
         return TODOS[todo_id], 200
 
-    def delete(self, todo_id):
+    def delete(self, todo_id: int) -> Dict[str, str]:
         """
         Delete the content of a todo in the todos service
         ---
@@ -107,7 +110,7 @@ class TodoManagementResourceByID(Resource):
         del TODOS[todo_id]
         return todo, 200
 
-    def patch(self, todo_id):
+    def patch(self, todo_id: int) -> Dict[str, str]:
         """
         Create the content of a todo in the todos service
         ---
@@ -155,24 +158,24 @@ class TodoManagementResourceByID(Resource):
         except:
             abort(400)
 
-def get_todo_ids():
+def get_todo_ids() -> List[int]:
     return list(map(lambda todo: todo['id'], TODOS))
 
-def abort_if_todo_doesnt_exist(todo_id):
+def abort_if_todo_doesnt_exist(todo_id: int):
     todo_ids = get_todo_ids()
     if todo_id not in todo_ids:
         abort(404,  message="Cannot find the TODO with id {}".format(todo_id))
 
-def abort_if_todo_already_exist(todo_id):
+def abort_if_todo_already_exist(todo_id: int):
     todo_ids = get_todo_ids()
     if todo_id in todo_ids:
         abort(404,  message="TODO with id {} already exists".format(todo_id))
 
-def abort_if_todo_has_negative_id(todo_id):
+def abort_if_todo_has_negative_id(todo_id: int):
     if todo_id < 0:
         abort(404,  message="TODO cannot have negative id value")
 
-def getFirstMissingID():
+def getFirstMissingID() -> int:
     todo_ids = get_todo_ids()
     i = 1
     while (i < len(todo_ids)):
